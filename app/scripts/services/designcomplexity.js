@@ -61,13 +61,12 @@ angular.module('nscwebappApp')
             var service = {
                 validateInputs: validateInputs,
                 designComplexity: designComplexity,
-                computeDesignComplexity: computeDesignComplexity
+                computeDesignComplexity: computeDesignComplexity,
+                
             };
             return service;
             ///////////////////////////
-
             function validateInputs(options) {
-
                 options = angular.extend({}, defaultComplexityVars, options);
                 var flag = (options.isNewDevelopment !== undefined && typeof (options.isNewDevelopment) === 'boolean');
 
@@ -90,11 +89,11 @@ angular.module('nscwebappApp')
             function computeDesignComplexity(options) {
                 var flag = validateInputs(options);
                 var tempRow;
-                
+
                 //complexity strike sum tally used to hold sums for simple, typical and complex
                 //var strikes = [0, 0, 0];
-                var strikes = {simple:0, typical:0, complex:0};
-                
+                var strikes = {simple: 0, typical: 0, complex: 0};
+
                 if (flag) {
 
                     //sum strikes for new development /redevelopment
@@ -107,13 +106,13 @@ angular.module('nscwebappApp')
                             strikes[idx] = strikes[idx] + val;
                         });
                     }
-                    
+
                     //sum strikes for new development /redevelopment
                     if (options.hasPretreatment) {
                         $.each(categoricalStrikeAssignments.hasPretreatment, function (idx, val) {
                             strikes[idx] = strikes[idx] + val;
                         });
-                    } 
+                    }
 
                     //sum strikes for suitability
                     tempRow = categoricalStrikeAssignments.siteSuitability[options.siteSuitability];
@@ -132,18 +131,17 @@ angular.module('nscwebappApp')
                     $.each(tempRow, function (idx, val) {
                         strikes[idx] = strikes[idx] + val;
                     });
-                    
+
                     //find max strike and return it complexit
-                    if(strikes.complex >= strikes.typical && strikes.complex >= strikes.simple){
+                    if (strikes.complex >= strikes.typical && strikes.complex >= strikes.simple) {
                         return designComplexity.complex;
-                    }else if(strikes.typical >= strikes.complex && strikes.typical >= strikes.simple){
+                    } else if (strikes.typical >= strikes.complex && strikes.typical >= strikes.simple) {
                         return designComplexity.typical;
-                    }else{
+                    } else {
                         return designComplexity.simple;
                     }
                 } else {
                     return -1;
                 }
             }
-
         });
